@@ -23,7 +23,7 @@
 
 > _Thêm ảnh chụp ứng dụng vào `docs/screenshot.png`, ảnh sẽ tự hiển thị ở đây._
 
-<!-- ![Ảnh ứng dụng](docs/screenshot.png) -->
+ ![Ảnh ứng dụng](docs/screenshot.png) 
 
 ---
 
