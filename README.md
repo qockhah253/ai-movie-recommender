@@ -1,6 +1,6 @@
 # 🎬 AI Movie Recommender
 
-A desktop application that **predicts a movie's rating** and **recommends similar, well-rated movies** from simple attributes (runtime, release year, genre, country). It trains and compares several regression models — **Linear Regression**, **Random Forest**, and **Gradient Boosting** — and automatically uses the best one. Built with **scikit-learn** and a **CustomTkinter** GUI.
+Ứng dụng desktop **dự đoán điểm đánh giá của phim** và **gợi ý những bộ phim tương tự, được đánh giá cao** dựa trên các đặc điểm đơn giản (thời lượng, năm phát hành, thể loại, quốc gia). Ứng dụng huấn luyện và so sánh nhiều mô hình hồi quy — **Linear Regression**, **Random Forest** và **Gradient Boosting** — rồi tự động chọn mô hình tốt nhất. Được xây dựng bằng **scikit-learn** và giao diện **CustomTkinter**.
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikitlearn&logoColor=white)
@@ -9,69 +9,69 @@ A desktop application that **predicts a movie's rating** and **recommends simila
 
 ---
 
-## ✨ Features
+## ✨ Tính năng
 
-- **Model comparison** — trains Linear Regression (baseline), Random Forest, and Gradient Boosting, evaluates each on a held-out test set (R², MAE, RMSE), and automatically selects the best.
-- **Rating prediction** — estimates a movie's expected TMDB score (1–10).
-- **Smart recommendations** — finds the most similar movies with **cosine similarity**, then re-ranks them by actual rating so suggestions are both relevant *and* good.
-- **Runs out-of-the-box** — a sample-data generator lets you try the app without downloading the full dataset.
-- **Tested** — a `pytest` suite and GitHub Actions CI keep the pipeline working.
-
----
-
-## 🖼️ Demo
-
-> _Add a screenshot of the running app to `docs/screenshot.png` and it will appear here._
-
-<!-- ![App screenshot](docs/screenshot.png) -->
+- **So sánh mô hình** — huấn luyện Linear Regression (mô hình nền để so sánh), Random Forest và Gradient Boosting, đánh giá từng mô hình trên tập kiểm tra (R², MAE, RMSE) rồi tự động chọn mô hình tốt nhất.
+- **Dự đoán điểm** — ước lượng điểm TMDB kỳ vọng của phim (thang 1–10).
+- **Gợi ý thông minh** — tìm các phim giống nhất bằng **cosine similarity**, sau đó sắp xếp lại theo điểm đánh giá thực tế để gợi ý vừa liên quan vừa chất lượng.
+- **Chạy được ngay** — có sẵn script sinh dữ liệu mẫu để dùng thử mà không cần tải bộ dữ liệu đầy đủ.
+- **Có kiểm thử** — bộ test `pytest` cùng GitHub Actions CI giúp đảm bảo pipeline luôn hoạt động.
 
 ---
 
-## 🧠 How It Works
+## 🖼️ Ảnh demo
 
-1. **Data preparation** — loads the TMDB dataset, keeps movies with more than 500 votes, extracts the *primary* genre and country, derives the release year, and one-hot encodes the categorical fields.
-2. **Model training & comparison** — features are scaled with `MinMaxScaler` (fitted on the training split only). Several models are trained and scored on a held-out test set; the one with the highest R² is selected to predict `vote_average`.
-3. **Recommendations** — the chosen attributes are turned into the same feature vector and compared against every movie with cosine similarity. A shortlist of the closest matches is then sorted by rating to produce the final five suggestions.
+> _Thêm ảnh chụp ứng dụng vào `docs/screenshot.png`, ảnh sẽ tự hiển thị ở đây._
+
+<!-- ![Ảnh ứng dụng](docs/screenshot.png) -->
 
 ---
 
-## 📁 Project Structure
+## 🧠 Cách hoạt động
+
+1. **Chuẩn bị dữ liệu** — nạp bộ dữ liệu TMDB, giữ lại các phim có hơn 500 lượt bình chọn, lấy thể loại và quốc gia *chính*, trích xuất năm phát hành, và mã hóa one-hot cho các cột phân loại.
+2. **Huấn luyện & so sánh mô hình** — đặc trưng được chuẩn hóa bằng `MinMaxScaler` (chỉ fit trên tập huấn luyện để tránh rò rỉ dữ liệu). Nhiều mô hình được huấn luyện và chấm điểm trên tập kiểm tra; mô hình có R² cao nhất được chọn để dự đoán `vote_average`.
+3. **Gợi ý** — các đặc điểm đã chọn được biến thành cùng một vector đặc trưng và so khớp với mọi phim bằng cosine similarity. Một danh sách rút gọn các phim gần nhất sau đó được sắp xếp theo điểm để tạo ra 5 gợi ý cuối cùng.
+
+---
+
+## 📁 Cấu trúc dự án
 
 ```
-movie-recommender-linear-regression/
-├── main.py                     # Entry point: load data, compare models, launch GUI
-├── conftest.py                 # Makes the project importable in tests
-├── requirements.txt            # Runtime dependencies
-├── requirements-dev.txt        # Test dependencies
+ai-movie-recommender/
+├── main.py                     # Điểm chạy: nạp dữ liệu, so sánh mô hình, mở GUI
+├── conftest.py                 # Giúp import được project khi chạy test
+├── requirements.txt            # Thư viện chạy ứng dụng
+├── requirements-dev.txt        # Thư viện cho kiểm thử
 ├── README.md  ·  LICENSE  ·  .gitignore
-├── .github/workflows/ci.yml    # GitHub Actions CI
-├── data/                       # Dataset goes here (git-ignored)
+├── .github/workflows/ci.yml    # CI của GitHub Actions
+├── data/                       # Đặt bộ dữ liệu vào đây (bị .gitignore bỏ qua)
 ├── scripts/
-│   └── generate_sample_data.py # Create a small synthetic dataset
+│   └── generate_sample_data.py # Sinh bộ dữ liệu mẫu nhỏ
 ├── tests/
-│   └── test_pipeline.py        # Unit tests (no GUI needed)
+│   └── test_pipeline.py        # Kiểm thử (không cần GUI)
 └── movie_recommender/
-    ├── config.py               # All tunable constants and paths
-    ├── data.py                 # Loading, cleaning, feature encoding
-    ├── model.py                # Training, comparison, recommendations
-    └── gui.py                  # CustomTkinter interface
+    ├── config.py               # Toàn bộ hằng số và đường dẫn có thể chỉnh
+    ├── data.py                 # Nạp, làm sạch, mã hóa đặc trưng
+    ├── model.py                # Huấn luyện, so sánh, gợi ý
+    └── gui.py                  # Giao diện CustomTkinter
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Bắt đầu
 
-### Prerequisites
+### Yêu cầu
 
-- Python 3.10 or newer
+- Python 3.10 trở lên
 
-### 1. Clone and install
+### 1. Tải về và cài đặt
 
 ```bash
 git clone https://github.com/qockhah253/ai-movie-recommender.git
-cd movie-recommender-linear-regression
+cd ai-movie-recommender
 
-# (recommended) create a virtual environment
+# (khuyến nghị) tạo môi trường ảo
 python -m venv .venv
 .venv\Scripts\activate        # Windows
 # source .venv/bin/activate   # macOS / Linux
@@ -79,32 +79,30 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 2a. Quickstart — try it with sample data (no download)
+### 2a. Chạy nhanh — dùng thử với dữ liệu mẫu (không cần tải)
 
 ```bash
-python scripts/generate_sample_data.py   # writes a synthetic data/ file
+python scripts/generate_sample_data.py   # tạo file dữ liệu giả trong data/
 python main.py
 ```
 
-> The sample data is **synthetic** (random titles and ratings) and only for trying the app out.
+> Dữ liệu mẫu là **dữ liệu giả** (tên phim và điểm số ngẫu nhiên), chỉ để dùng thử ứng dụng.
 
-### 2b. Run with the real dataset
+### 2b. Chạy với bộ dữ liệu thật
 
-Download the **TMDB Movies Dataset** from Kaggle —
-[asaniczka/tmdb-movies-dataset-2023-930k-movies](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) —
-and place `TMDB_movie_dataset_v11.csv` in a `data/` folder at the project root:
+Tải **bộ dữ liệu TMDB Movies** từ Kaggle — [asaniczka/tmdb-movies-dataset-2023-930k-movies](https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies) — và đặt file `TMDB_movie_dataset_v11.csv` vào thư mục `data/` ở thư mục gốc của dự án:
 
 ```
 data/TMDB_movie_dataset_v11.csv
 ```
 
-Then run:
+Sau đó chạy:
 
 ```bash
 python main.py
 ```
 
-On startup the console prints the model comparison, for example:
+Khi khởi động, console sẽ in ra bảng so sánh mô hình, ví dụ:
 
 ```
 Model comparison (held-out test set):
@@ -116,43 +114,43 @@ Linear Regression 0.09x 0.7xx 0.9xx
 Best model: Gradient Boosting
 ```
 
-*(Exact numbers depend on the dataset; ratings are only weakly predictable from these features, so values are modest by design.)*
+*(Con số cụ thể phụ thuộc vào dữ liệu; điểm phim vốn khó dự đoán chính xác từ các đặc trưng này, nên giá trị ở mức khiêm tốn là điều bình thường.)*
 
 ---
 
-## 🧪 Running Tests
+## 🧪 Chạy kiểm thử
 
 ```bash
 pip install -r requirements-dev.txt
-python scripts/generate_sample_data.py   # tests also generate their own data
+python scripts/generate_sample_data.py   # test cũng tự sinh dữ liệu riêng
 pytest
 ```
 
 ---
 
-## ⚙️ Configuration
+## ⚙️ Tùy chỉnh
 
-All tunable values live in `movie_recommender/config.py` — minimum vote count, number of genres/countries to keep, train/test split ratio, number of recommendations, and the dataset path. Change them there without touching the rest of the code.
-
----
-
-## ⚠️ Notes & Limitations
-
-- A movie's rating is only weakly linear in attributes like runtime and genre, so R² is modest by design — this project is a clear, end-to-end demonstration of regression + similarity, not a state-of-the-art recommender.
-- Only the *primary* genre and country are used to keep the feature space small.
-- Recommendations are content-based (attribute similarity), not collaborative — there is no per-user history.
+Mọi giá trị có thể chỉnh đều nằm trong `movie_recommender/config.py` — số lượt bình chọn tối thiểu, số thể loại/quốc gia giữ lại, tỉ lệ chia tập train/test, số lượng gợi ý, và đường dẫn dữ liệu. Chỉnh ở đó mà không cần đụng tới phần còn lại của code.
 
 ---
 
-## 🛣️ Possible Improvements
+## ⚠️ Lưu ý & Hạn chế
 
-- Use all genres via multi-hot encoding instead of just the first.
-- Add semantic similarity on the movie overview text (e.g. Sentence-BERT embeddings).
-- Switch to an interaction dataset (e.g. MovieLens) for collaborative filtering.
-- Cache the trained model so the app starts instantly.
+- Điểm đánh giá của phim chỉ tuyến tính yếu với các đặc điểm như thời lượng hay thể loại, nên R² ở mức khiêm tốn là cố ý — dự án này là một ví dụ rõ ràng, đầu-cuối về hồi quy + độ tương đồng, chứ không phải một hệ gợi ý hàng đầu.
+- Chỉ dùng thể loại và quốc gia *chính* để giữ không gian đặc trưng nhỏ gọn.
+- Gợi ý dựa trên nội dung (độ tương đồng đặc điểm), không phải collaborative — không có lịch sử theo từng người dùng.
 
 ---
 
-## 📝 License
+## 🛣️ Hướng phát triển
 
-Released under the [MIT License](LICENSE).
+- Dùng tất cả thể loại bằng mã hóa multi-hot thay vì chỉ thể loại đầu tiên.
+- Thêm độ tương đồng ngữ nghĩa dựa trên phần mô tả phim (ví dụ embedding Sentence-BERT).
+- Chuyển sang bộ dữ liệu có tương tác người dùng (ví dụ MovieLens) để làm collaborative filtering.
+- Lưu cache mô hình đã huấn luyện để ứng dụng khởi động tức thì.
+
+---
+
+## 📝 Giấy phép
+
+Phát hành theo [Giấy phép MIT](LICENSE).
